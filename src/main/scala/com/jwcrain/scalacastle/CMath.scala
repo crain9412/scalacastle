@@ -1,5 +1,7 @@
 package com.jwcrain.scalacastle
 
+import java.math.BigInteger
+
 import scala.annotation.tailrec
 
 object CMath {
@@ -10,5 +12,15 @@ object CMath {
     }
     
     go(n, 1.0)
+  }
+
+  def fibonacci(n: Double): Double = {
+    @tailrec def go(i: Double, current: Double, previous: Double): Double = {
+      if (n < 2) return n
+      if (n == i) return current
+      go(i + 1, current + previous, current)
+    }
+
+    go(0, 1, 0)
   }
 }
