@@ -16,4 +16,11 @@ class CFunctionalTest extends FunSuite {
     val add = CFunctional.decurry(addCurry)
     assert(add(10, 10) == 20)
   }
+
+  test("minus5AndThenAdd10(10) should equal 15") {
+    def add10(n: Int): Int = n + 10
+    def minus5(n: Int): Int = n - 5
+    val minus5andThenAdd10 = CFunctional.compose(add10, minus5)
+    assert(minus5andThenAdd10(10) == 15)
+  }
 }
