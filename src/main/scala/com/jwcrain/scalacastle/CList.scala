@@ -82,6 +82,22 @@ object CList {
     go(Nil, list)
   }
 
+  def foldRight[A, B](list: CList[A], initial: B)(f: (A, B) => B): B = {
+    list match {
+      case Nil => initial
+      case Node(head, tail) => f(head, foldRight(tail, initial)(f))
+    }
+  }
+
+  def sumFold(list: CList[Int]): Int =
+    foldRight(list, 0)(_ + _)
+
+  def productFold(list: CList[Double]): Double =
+    foldRight(list, 1.0)((x, y) => {
+      if (x == 0.0 || y == 0.0) return 0
+      x * y
+    })
+
   def apply[T](nodes: T*): CList[T] = {
     if (nodes.isEmpty) Nil
     else Node(nodes.head, apply(nodes.tail: _*))

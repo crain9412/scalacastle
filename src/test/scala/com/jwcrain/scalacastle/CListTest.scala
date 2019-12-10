@@ -35,4 +35,14 @@ class CListTest extends FunSuite {
     val expected: CList[Int] = CList(1, 2)
     assert(CList.init(CList(1, 2, 3)) == expected)
   }
+
+  test("sumFold(1, 2, 3) should equal sum(1, 2, 3)") {
+    val list: CList[Int] = CList(1, 2, 3)
+    assert(CList.sum(list) == CList.sumFold(list))
+  }
+
+  test("product(4, 5, 6) should equal sumProduct(4, 5, 6)") {
+    val list: CList[Double] = CList(4.0, 5.0, 6.0)
+    assert(CList.product(list) == CList.productFold(list))
+  }
 }
