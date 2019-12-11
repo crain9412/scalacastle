@@ -45,4 +45,9 @@ class CListTest extends FunSuite {
     val list: CList[Double] = CList(4.0, 5.0, 6.0)
     assert(CList.product(list) == CList.productFold(list))
   }
+
+  test("length of (5, 3, 1, 2) should be 4") {
+    val list: CList[Int] = CList(5, 3, 1, 2)
+    assert(CList.length(list) == 4)
+  }
 }

@@ -89,6 +89,12 @@ object CList {
     }
   }
 
+  def length[T](list: CList[T]): Int = {
+    foldRight(list, 0)((x, y) => {
+      y + 1
+    })
+  }
+
   def sumFold(list: CList[Int]): Int =
     foldRight(list, 0)(_ + _)
 
