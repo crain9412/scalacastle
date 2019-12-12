@@ -82,11 +82,9 @@ object CList {
     go(Nil, list)
   }
 
-  def foldRight[A, B](list: CList[A], initial: B)(f: (A, B) => B): B = {
-    list match {
-      case Nil => initial
-      case Node(head, tail) => f(head, foldRight(tail, initial)(f))
-    }
+  def foldRight[A, B](list: CList[A], initial: B)(f: (A, B) => B): B = list match {
+    case Nil => initial
+    case Node(head, tail) => f(head, foldRight(tail, initial)(f))
   }
 
   def length[T](list: CList[T]): Int = {
@@ -103,6 +101,21 @@ object CList {
       if (x == 0.0 || y == 0.0) return 0
       x * y
     })
+
+  def foldLeft[A, B](list: CList[A], initial: B)(f: (B, A) => B): B = {
+    @tailrec def go(currentList: CList[A], accumulator: B): B = {
+      if (currentList.isEmpty) return accumulator
+      go (tail(currentList), f(accumulator, currentList.head))
+    }
+
+    go(list, initial)
+  }
+
+  def reverseFold[T](list: CList[T]): CList[T] = {
+    foldLeft(list, CList[T]())((accumulator, elementFromList) => {
+      Node(elementFromList, accumulator)
+    })
+  }
 
   def apply[T](nodes: T*): CList[T] = {
     if (nodes.isEmpty) Nil
