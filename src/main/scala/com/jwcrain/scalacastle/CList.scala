@@ -117,6 +117,12 @@ object CList {
     })
   }
 
+  def map[A, B](list:CList[A])(f: A => B): CList[B] = {
+    foldRight(list, CList[B]())((elementFromList, accumulator) => {
+      Node(f(elementFromList), accumulator)
+    })
+  }
+
   def append[T](list: CList[T], node: T): CList[T] = {
     foldRight(list, CList[T](node))((elementFromList, accumulator) => {
       Node(elementFromList, accumulator)
