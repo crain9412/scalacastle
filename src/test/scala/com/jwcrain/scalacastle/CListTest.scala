@@ -51,13 +51,18 @@ class CListTest extends FunSuite {
     assert(CList.length(list) == 4)
   }
 
-  test("foldLeft(1,2,3,4,5),2,(_ * _) should yield 240") {
+  test("foldLeft(1, 2, 3, 4, 5),2,(_ * _) should yield 240") {
     val list: CList[Int] = CList(1, 2, 3, 4, 5)
-    assert(CList.foldLeft(list, 2)(_ * _) == 240)
+    assert(CList.foldLeft(2, list)(_ * _) == 240)
   }
 
-  test("reverseFold(1,2,3) should yield (3,2,1)") {
+  test("reverseFold(1, 2, 3) should yield (3, 2, 1)") {
     val expected: CList[Int] = CList(3, 2, 1)
     assert(CList.reverseFold(CList(1, 2, 3)) == expected)
+  }
+
+  test("append((1, 2, 3), 4) should yield (1, 2, 3, 4)") {
+    val expected: CList[Int] = CList(1, 2, 3, 4)
+    assert(CList.append(CList(1, 2, 3), 4) == expected)
   }
 }

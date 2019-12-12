@@ -102,7 +102,7 @@ object CList {
       x * y
     })
 
-  def foldLeft[A, B](list: CList[A], initial: B)(f: (B, A) => B): B = {
+  def foldLeft[A, B](initial: B, list: CList[A])(f: (B, A) => B): B = {
     @tailrec def go(currentList: CList[A], accumulator: B): B = {
       if (currentList.isEmpty) return accumulator
       go (tail(currentList), f(accumulator, currentList.head))
@@ -112,7 +112,13 @@ object CList {
   }
 
   def reverseFold[T](list: CList[T]): CList[T] = {
-    foldLeft(list, CList[T]())((accumulator, elementFromList) => {
+    foldLeft(CList[T](), list)((accumulator, elementFromList) => {
+      Node(elementFromList, accumulator)
+    })
+  }
+
+  def append[T](list: CList[T], node: T): CList[T] = {
+    foldRight(list, CList[T](node))((elementFromList, accumulator) => {
       Node(elementFromList, accumulator)
     })
   }
