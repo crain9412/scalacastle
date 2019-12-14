@@ -123,6 +123,14 @@ object CList {
     })
   }
 
+  def filter[T](list:CList[T])(f: T => Boolean): CList[T] = {
+    foldRight(list, CList[T]())((elementFromList, accumulator) => {
+      if (f(elementFromList)) Node(elementFromList, accumulator)
+      else if (accumulator.isEmpty) CList[T]()
+      else Node(accumulator.head, accumulator.tail)
+    })
+  }
+
   def append[T](list: CList[T], node: T): CList[T] = {
     foldRight(list, CList[T](node))((elementFromList, accumulator) => {
       Node(elementFromList, accumulator)

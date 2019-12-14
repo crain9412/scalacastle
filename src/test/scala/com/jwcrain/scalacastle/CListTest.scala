@@ -70,4 +70,9 @@ class CListTest extends FunSuite {
     val expected: CList[Int] = CList(2, 4, 6)
     assert(CList.map(CList(1, 2, 3))(_ * 2) == expected)
   }
+
+  test("filter(1, 2, 3, 4, 5)(_ % 2 == 0) should yield (2, 4)") {
+    val expected: CList[Int] = CList(2, 4)
+    assert(CList.filter(CList(1, 2, 3, 4, 5))(_ % 2 == 0) == expected)
+  }
 }
