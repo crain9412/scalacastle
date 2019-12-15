@@ -85,4 +85,11 @@ class CListTest extends FunSuite {
     val expected: CList[Int] = CList(2, 4)
     assert(CList.filterWithFlatMap(CList(1, 2, 3, 4, 5))(_ % 2 == 0) == expected)
   }
+
+  test("zipWith(1, 2, 3)(4, 5, 6, 7)(_ + _) should yield (5, 7, 9, 7)") {
+    val input: CList[Int] = CList(1, 2, 3)
+    val input2: CList[Int] = CList(4, 5, 6, 7)
+    val expected: CList[Int] = CList(5, 7, 9, 7)
+    assert(CList.zipWith(input)(input2)(_ + _) == expected)
+  }
 }

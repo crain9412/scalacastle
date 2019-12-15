@@ -142,7 +142,7 @@ object CList {
     if (listB.isEmpty) return list
 
     foldRight(list, listB)((currentElement, accumulator) => {
-      append(accumulator,currentElement)
+      append(accumulator, currentElement)
     })
   }
 
@@ -160,6 +160,19 @@ object CList {
       if (f(elementFromList)) CList[T](elementFromList)
       else CList[T]()
     })
+  }
+
+  def zipWith[T](list: CList[T])(listB: CList[T])(f: (T, T) => T): CList[T] = {
+    @tailrec def go(accumulator: CList[T], current: CList[T], currentB: CList[T]): CList[T] = {
+      (current, currentB) match {
+        case (Nil, Nil) => accumulator
+        case (Nil, _) => go(append(accumulator, currentB.head), current, currentB.tail)
+        case (_, Nil) => go(append(accumulator, current.head), current.tail, currentB)
+        case (_, _) =>  go(append(accumulator, f(current.head, currentB.head)), current.tail, currentB.tail)
+      }
+    }
+
+    go(CList[T](), list, listB)
   }
 
   def apply[T](nodes: T*): CList[T] = {
