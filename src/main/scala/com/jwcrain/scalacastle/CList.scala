@@ -137,6 +137,24 @@ object CList {
     })
   }
 
+  def concat[T](list: CList[T], listB: CList[T]): CList[T] = {
+    if (list.isEmpty) return listB
+    if (listB.isEmpty) return list
+
+    foldRight(list, listB)((currentElement, accumulator) => {
+      append(accumulator,currentElement)
+    })
+  }
+
+  def flatMap[A, B](list: CList[A])(f: A => CList[B]): CList[B] = {
+    @tailrec def go(current: CList[A], accumulator: CList[B]): CList[B] = {
+      if (current.isEmpty) return accumulator
+      go(current.tail, concat(f(current.head), accumulator))
+    }
+
+    go(list, Nil: CList[B])
+  }
+
   def apply[T](nodes: T*): CList[T] = {
     if (nodes.isEmpty) Nil
     else Node(nodes.head, apply(nodes.tail: _*))
