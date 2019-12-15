@@ -155,6 +155,13 @@ object CList {
     go(list, Nil: CList[B])
   }
 
+  def filterWithFlatMap[T](list: CList[T])(f: T => Boolean): CList[T] = {
+    flatMap(list)((elementFromList) => {
+      if (f(elementFromList)) CList[T](elementFromList)
+      else CList[T]()
+    })
+  }
+
   def apply[T](nodes: T*): CList[T] = {
     if (nodes.isEmpty) Nil
     else Node(nodes.head, apply(nodes.tail: _*))

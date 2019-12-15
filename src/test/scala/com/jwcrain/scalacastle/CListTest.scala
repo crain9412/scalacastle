@@ -80,4 +80,9 @@ class CListTest extends FunSuite {
     val expected: CList[Int] = CList(1, 1, 2, 2, 3, 3)
     assert(CList.flatMap(CList(1, 2, 3))(i => CList(i, i)) == expected)
   }
+
+  test("filterWithFlatMap(1, 2, 3, 4, 5)(_ % 2 == 0) should yield (2, 4)") {
+    val expected: CList[Int] = CList(2, 4)
+    assert(CList.filterWithFlatMap(CList(1, 2, 3, 4, 5))(_ % 2 == 0) == expected)
+  }
 }
