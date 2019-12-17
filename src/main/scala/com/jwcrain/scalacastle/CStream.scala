@@ -14,6 +14,35 @@ sealed trait CStream[+T] {
 
     go(this, CList[T]())
   }
+
+  def reverse(): CStream[T] = {
+    @tailrec def go(inputStream: CStream[T], currentStream:CStream[T]): CStream[T] = {
+      if (inputStream.isEmpty()) return currentStream
+      go(inputStream.tail(), StreamNode(inputStream.head, () => currentStream))
+    }
+
+    go(this, CStream[T]())
+  }
+
+  def take(n: Int): CStream[T] = {
+    @tailrec def go(inputStream: CStream[T], currentStream: CStream[T], i: Int): CStream[T] = {
+      if (i == n) return currentStream
+      if (inputStream.isEmpty()) return currentStream
+      go(inputStream.tail(), CStream.node(inputStream.head(), currentStream), i + 1)
+    }
+
+    go(this, CStream[T](), 0).reverse()
+  }
+
+  def drop(n: Int): CStream[T] = {
+    @tailrec def go(inputStream: CStream[T], currentStream: CStream[T], i: Int): CStream[T] = {
+      if (i == n + 1) return currentStream
+      if (inputStream.isEmpty()) return currentStream
+      go(inputStream.tail(), CStream.node(inputStream.head(), inputStream.tail()), i + 1)
+    }
+
+    go(this, CStream[T](), 0)
+  }
 }
 case object Empty extends CStream[Nothing] {
   override def head: Nothing = throw new NoSuchElementException("head of empty stream")
@@ -21,7 +50,7 @@ case object Empty extends CStream[Nothing] {
   override def isEmpty: () => Boolean = () => true
 }
 
-case class StreamNode[+T](hd: () => T, tl: () => CStream[T]) extends CStream[T] {
+case class StreamNode[T](hd: () => T, tl: () => CStream[T]) extends CStream[T] {
   override def head: () => T = hd
   override def tail: () => CStream[T] = tl
   override def isEmpty: () => Boolean = () => false

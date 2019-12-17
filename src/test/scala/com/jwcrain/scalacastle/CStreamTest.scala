@@ -11,4 +11,16 @@ class CStreamTest extends FunSuite {
     val expected: CList[Int] = CList(1, 2, 3)
     assert(stream.toList == expected)
   }
+
+  test("CStream(1, 2, 3, 4, 5).take(3).toList should yield CList(1, 2, 3)") {
+    val stream: CStream[Int] = CStream(1, 2, 3, 4, 5)
+    val expected: CList[Int] = CList(1, 2, 3)
+    assert(stream.take(3).toList == expected)
+  }
+
+  test("CStream(1, 2, 3, 4, 5).drop(2).toList should yield CList(3, 4, 5)") {
+    val stream: CStream[Int] = CStream(1, 2, 3, 4, 5)
+    val expected: CList[Int] = CList(3, 4, 5)
+    assert(stream.drop(2).toList == expected)
+  }
 }
