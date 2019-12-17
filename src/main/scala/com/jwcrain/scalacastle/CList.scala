@@ -7,6 +7,7 @@ sealed trait CList[+T] {
   def tail: CList[T]
   def isEmpty: Boolean
 }
+
 case object Nil extends CList[Nothing] {
   override def head: Nothing = throw new NoSuchElementException("head of empty list")
   override def tail: Nothing = throw new NoSuchElementException("tail of empty list")
