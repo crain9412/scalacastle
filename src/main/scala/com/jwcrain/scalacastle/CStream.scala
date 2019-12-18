@@ -44,6 +44,15 @@ sealed trait CStream[+T] {
     go(this, CStream[T](), 0)
   }
 
+  def foldRight[B](initial: B)(f: (T, B) => B): B = {
+    this.foldRightHelper(this, initial)(f)
+  }
+
+  private def foldRightHelper[A, B](current: CStream[A], initial: B)(f: (A, B) => B): B = current match {
+    case Empty => initial
+    case StreamNode(hd, tl) => f(hd(), foldRightHelper(tl(), initial)(f))
+  }
+
   def takeWhile(f: T => Boolean): CStream[T] = {
     @tailrec def go(inputStream: CStream[T], currentStream: CStream[T], i: Int): CStream[T] = {
       if (inputStream.isEmpty()) return currentStream
