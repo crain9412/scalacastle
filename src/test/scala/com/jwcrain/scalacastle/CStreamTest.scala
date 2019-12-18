@@ -29,4 +29,14 @@ class CStreamTest extends FunSuite {
     val expected: CList[Int] = CList(2, 4, 6, 8)
     assert(stream.takeWhile(_ % 2 == 0).toList == expected)
   }
+
+  test("CStream(1, 3, 5, 7).forAll(even) should be true") {
+    val stream: CStream[Int] = CStream(1, 3, 5, 7)
+    assert(stream.forAll(_ % 2 != 0))
+  }
+
+  test("CStream(1, 3, 5, 7, 8).forAll(even) should be false") {
+    val stream: CStream[Int] = CStream(1, 3, 5, 7, 8)
+    assert(!stream.forAll(_ % 2 != 0))
+  }
 }

@@ -53,7 +53,18 @@ sealed trait CStream[+T] {
 
     go(this, CStream[T](), 0).reverse()
   }
+
+  def forAll(f: T => Boolean): Boolean = {
+    @tailrec def go(inputStream: CStream[T], currentStream: CStream[T], i: Int): Boolean = {
+      if (inputStream.isEmpty()) return true
+      if (!f(inputStream.head())) return false
+      go(inputStream.tail(), CStream.node(inputStream.head(), currentStream), i + 1)
+    }
+
+    go(this, CStream[T](), 0)
+  }
 }
+
 case object Empty extends CStream[Nothing] {
   override def head: Nothing = throw new NoSuchElementException("head of empty stream")
   override def tail: Nothing = throw new NoSuchElementException("tail of empty stream")
