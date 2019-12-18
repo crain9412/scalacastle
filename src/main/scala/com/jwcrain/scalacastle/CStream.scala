@@ -43,6 +43,16 @@ sealed trait CStream[+T] {
 
     go(this, CStream[T](), 0)
   }
+
+  def takeWhile(f: T => Boolean): CStream[T] = {
+    @tailrec def go(inputStream: CStream[T], currentStream: CStream[T], i: Int): CStream[T] = {
+      if (inputStream.isEmpty()) return currentStream
+      if (!f(inputStream.head())) return currentStream
+      go(inputStream.tail(), CStream.node(inputStream.head(), currentStream), i + 1)
+    }
+
+    go(this, CStream[T](), 0).reverse()
+  }
 }
 case object Empty extends CStream[Nothing] {
   override def head: Nothing = throw new NoSuchElementException("head of empty stream")
