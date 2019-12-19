@@ -51,4 +51,10 @@ class CStreamTest extends FunSuite {
     val expected: CList[Int] = CList(1, 1, 1, 1, 1)
     assert(ones.take(5).toList == expected)
   }
+
+  test("CStream(6, 8, 10).map(_ / 2).toList should yield CList(3, 4, 5)") {
+    val stream: CStream[Int] = CStream(6, 8, 10)
+    val expected: CList[Int] = CList(3, 4, 5)
+    assert(stream.map((a: Int) => {a / 2}).toList == expected)
+  }
 }

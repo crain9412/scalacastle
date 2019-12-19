@@ -18,7 +18,7 @@ sealed trait CStream[+T] {
   def reverse(): CStream[T] = {
     @tailrec def go(inputStream: CStream[T], currentStream:CStream[T]): CStream[T] = {
       if (inputStream.isEmpty()) return currentStream
-      go(inputStream.tail(), StreamNode(inputStream.head, () => currentStream))
+      go(inputStream.tail(), CStream.node(inputStream.head(), currentStream))
     }
 
     go(this, CStream[T]())
@@ -61,6 +61,12 @@ sealed trait CStream[+T] {
     }
 
     go(this, CStream[T](), 0).reverse()
+  }
+
+  def map[A](f: T => A): CStream[A] = {
+    foldRight(CStream[A]())((elementFromList, accumulator) => {
+      CStream.node(f(elementFromList), accumulator)
+    })
   }
 
   def forAll(f: T => Boolean): Boolean = {
