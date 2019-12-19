@@ -57,4 +57,10 @@ class CStreamTest extends FunSuite {
     val expected: CList[Int] = CList(3, 4, 5)
     assert(stream.map((a: Int) => {a / 2}).toList == expected)
   }
+
+  test("I can count to five with an infinite stream") {
+    lazy val incrementor: CStream[Int] = CStream.from(1)
+    val expected: CList[Int] = CList(1, 2, 3, 4, 5)
+    assert(incrementor.take(5).toList == expected)
+  }
 }

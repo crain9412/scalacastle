@@ -103,6 +103,10 @@ object CStream {
     node(a, constant(a))
   }
 
+  def from(n: Int): CStream[Int] = {
+    node(n, from(n + 1))
+  }
+
   def empty[T]: CStream[T] = Empty
 
   def apply[T](stream: T*): CStream[T] =
