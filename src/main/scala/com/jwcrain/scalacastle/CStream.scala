@@ -107,6 +107,14 @@ object CStream {
     node(n, from(n + 1))
   }
 
+  def unfold[A, S](inputState: S)(f: S => Option[(A, S)]): CStream[A] = {
+    lazy val state = f(inputState)
+    if (state.isEmpty) return Empty
+    lazy val currentState = state.get._1
+    lazy val nextState = state.get._2
+    node(currentState, unfold(nextState)(f))
+  }
+
   def empty[T]: CStream[T] = Empty
 
   def apply[T](stream: T*): CStream[T] =

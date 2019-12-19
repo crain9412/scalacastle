@@ -63,4 +63,14 @@ class CStreamTest extends FunSuite {
     val expected: CList[Int] = CList(1, 2, 3, 4, 5)
     assert(incrementor.take(5).toList == expected)
   }
+
+  test("Test some exponent unfolding") {
+    val currentState: Int = 1
+    def exponentialWithoutOverflow(n: Int): Option[(Int, Int)] = {
+      if (n >= Int.MaxValue / 2) return None
+      Some((n, n * 2))
+    }
+    val expected: CList[Int] = CList(1, 2, 4, 8, 16)
+    assert(CStream.unfold(currentState)(exponentialWithoutOverflow).take(5).toList == expected)
+  }
 }
