@@ -47,7 +47,7 @@ class CStreamTest extends FunSuite {
   }
 
   test("I should be able to take 5 elements of an infinite stream") {
-    lazy val ones: CStream[Int] = CStream.node(1, ones)
+    lazy val ones: CStream[Int] = CStream.constant(1)
     val expected: CList[Int] = CList(1, 1, 1, 1, 1)
     assert(ones.take(5).toList == expected)
   }

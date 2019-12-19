@@ -99,6 +99,10 @@ object CStream {
     StreamNode(() => head, () => tail)
   }
 
+  def constant[T](a: T): CStream[T] = {
+    node(a, constant(a))
+  }
+
   def empty[T]: CStream[T] = Empty
 
   def apply[T](stream: T*): CStream[T] =
